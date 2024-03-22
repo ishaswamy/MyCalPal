@@ -1,5 +1,6 @@
 """
-Imports the database for MongoDB.
+"""
+#Imports the database for MongoDB.
 
 """
 import MyClassPal;
@@ -22,3 +23,4 @@ print(result)
 
 # Close the connection
 client.close()
+"""

@@ -50,7 +50,7 @@ class MyCalPal:
 
         # checks if username is longer than three characters.
         if (len(username) < 3): 
-            msg += "Usernname is not longer than three characters.\n"
+            msg += "Username is not longer than three characters.\n"
             valid = False 
             
         # checks if username is equal to password

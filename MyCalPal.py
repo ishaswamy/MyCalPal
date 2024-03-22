@@ -33,11 +33,43 @@ Calorie Function:
         b. Present the amount of calories the user has consumed.
 
 """
+"""
+Imports the database for MongoDB.
+
+"""
+import MyClassPal;
+
+from pymongo import MongoClient
+
+# Connect to MongoDB
+#client = MongoClient("mongodb+srv://cluster0.ydug9w5.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient('mongodb://localhost:27017/')
+
+# Access a database
+db = client['MyCalPal']
+
+# Access a collection
+foodItem = db['item']
+
+# Insert a document
+result = foodItem.insert_one({'name': 'Orange', 'calories': 90})
+print(result)
+
+# Access a collection
+loginInfo = db['user']
+
+
+
+
+
 
 # Initiates the Program
 
+import MyDatabasePal
 import MyClassPal
     
+
+
 def main():
     
     system_message = " " # prompt response meant to be run
@@ -47,43 +79,51 @@ def main():
 
 def signup_or_login():
     choice = int(input("Welcome to 'MyCalPal' would you like to: \n\n1.Login\n2.Create an Account\n3.Exit\n\n"))
-    
     mcp = MyClassPal.MyCalPal()
-
     
     while(choice != 1) and (choice != 2) and (choice !=3): # Validity Checker for the Program
         print("Invalid input. Try Again.\n\n") 
         choice = 0 # Reset choice back to 0 to initiate the loop.
-            
         choice = int(input("Would you like to: \n\n1.Login\n2.Create an Account\n3.Exit"))
         
     # Account Log-in Process
-    if (choice == 1 ):
+    if choice == 1:
         print("Log-In.\n----------\n\n")
         user = input("Input username: ")
         passw = input("Input password: ")
+        login_user(user, passw)
 
     # Account Creation Process
-    elif( choice == 2):
-        valid = False
-        message = ""
+    elif choice == 2:
+        create_account()
 
-        print("Creating Account.\n----------")
-        while (valid == False):
-            user = input ("Input username: ")
-            passw = input("Input password: ")
-            
-            message, valid = mcp.myValidPal(user, passw)
-            
-            if(valid == False):
-                print("Username or password not valid:\n" + message)
-           
-            elif(valid==True):
-                print("Account successfully created.")
-     
     # Exits the program.
-    elif(choice == 3):
+    elif choice == 3:
         print("Ending program.")
+
+        
+    
+def create_account():
+    valid = False
+    print("Creating Account.\n----------")
+    while not valid:
+        user = input("Input username: ")
+        passw = input("Input password: ")
+        if loginInfo.find_one({"username": user}):
+            print("Username already exists. Please choose another one.")
+        else:
+            loginInfo.insert_one({'username': user, 'password': passw})
+            print("Account successfully created.")
+            valid = True
+
+
+def login_user(username, password):
+        user = loginInfo.find_one({"username": username, "password": password})
+        if user:
+            print("Login successful!")
+        else:
+            print("Invalid username or password.")
+    
  
         
 
@@ -96,3 +136,6 @@ def CalcCals():
 
 if __name__ == "__main__":
     main()
+
+# Close the connection
+client.close()
