@@ -103,25 +103,26 @@ def signup_or_login():
 
         
     
+#create an account for user and add information to the system
 def create_account():
-    valid = False
+    valid = False #checks if credentials are valid
     print("Creating Account.\n----------")
-    while not valid:
+    while not valid: #ask for credentials until they meet requirements
         user = input("Input username: ")
         passw = input("Input password: ")
-        if loginInfo.find_one({"username": user}):
+        if loginInfo.find_one({"username": user}): #check if username has already been used
             print("Username already exists. Please choose another one.")
         else:
-            loginInfo.insert_one({'username': user, 'password': passw})
-            print("Account successfully created.")
-            valid = True
+            loginInfo.insert_one({'username': user, 'password': passw}) #add user credentials to database
+            print("Account successfully created.") #display success message
+            valid = True 
 
 
-def login_user(username, password):
-        user = loginInfo.find_one({"username": username, "password": password})
-        if user:
+def login_user(username, password): #allow user to log in to the system
+        user = loginInfo.find_one({"username": username, "password": password}) #check if credentials match an account in database
+        if user: #if account was found, display success message
             print("Login successful!")
-        else:
+        else: #if credentials do not match existing account, display failure message
             print("Invalid username or password.")
     
  
