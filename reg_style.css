@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('https://i.pinimg.com/564x/9a/81/c5/9a81c574d6b26928f9a3c5086039b45e.jpg');
+    background-size: cover;
+    color: #fff;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('https://i.pinimg.com/564x/9a/81/c5/9a81c574d6b26928f9a3c5086039b45e.jpg');
+    background-attachment: fixed;
+    margin-top:200px;
+}
+
+.user_info, .user_goals {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    margin-left: 14vh;
+}
+
+header h1, header h3, header p {
+    color: #FFF;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    box-sizing: border-box;
+    width: 100%;
+    background-color: #4CAF50;
+    height: 100px;
+    position: fixed;
+    top: 0;
+}
+
+header + .container {
+    margin-top: 100px; /* Adjust as needed to prevent header from covering content */
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+input[type="radio"] {
+    width: 25%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color:lightyellow;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="number"]:hover,
+textarea:hover {
+    background-color:beige;
+}
+
+input[type="submit"],
+input[type="radio"] {
+    width: auto; /* Adjust to fit content */
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #4CAF50;
+}
+
+input[type="submit"]:hover,
+input[type="radio"]:hover {
+    background-color: #45a049;
+}
+
+label, span, h4 {
+    color: #4CAF50;
+    margin: 5px; /* Adjust to control spacing */
+}
+
+input[type="number"]{
+    width: 10%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color:lightyellow;
+}
