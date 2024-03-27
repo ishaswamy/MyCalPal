@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker Homepage</title>
+    <link rel="stylesheet" type="text/css" href="styles/home_style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to Your Calorie Tracker</h1>
+    </header>
+
+    <div class="container">
+        <section class="daily-intake section">
+            <h2>Daily Intake</h2>
+            <div class="meal-sections">
+                <!-- Sections for each meal time will be dynamically created here -->
+            </div>
+            <button onclick="openFoodPopup()">Add Food Intake</button>
+            <div id="food-popup" class="popup" style="display: none;">
+                <h3>Add Food Intake</h3>
+                <label for="food-name">Food Name:</label>
+                <input type="text" id="food-name" name="food-name">
+                <label for="meal">Meal:</label>
+                <select id="meal" name="meal">
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snack">Snack</option>
+                </select>
+                <button onclick="addFood(); this.parentNode.style.display = 'none';">Submit</button>
+            </div>
+        </section>
+
+        <section class="water-intake section">
+            <h2>Water Intake</h2>
+            <ul id="water-list">
+                <!-- Water intake data will be displayed here -->
+            </ul>
+            <button onclick="openWaterPopup()">Add Water Intake</button>
+            <div id="water-popup" style="display: none;">
+                <h3>Add Water Intake</h3>
+                <label for="water-amount">Amount (in ounces):</label>
+                <input type="number" id="water-amount" name="water-amount">
+                <button onclick="addWater(); this.parentNode.style.display = 'none';">Submit</button>
+            </div>
+        </section>
+
+        <section class="end-day">
+            <button onclick="endDay()">End Day</button>
+        </section>
+
+        <section class="weekly-progress section">
+            <h2>Weekly Progress</h2>
+            <!-- Weekly bar graph will be displayed here -->
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 MyCalPal</p>
+    </footer>
+
+
+
+
+    <script>
+    function openFoodPopup() {
+        var popup = document.getElementById("food-popup");
+        popup.style.display = "block";
+    }
+
+    function openWaterPopup() {
+        var popup = document.getElementById("water-popup");
+        popup.style.display = "block";
+    }
+
+    function addFood() {
+        var foodName = document.getElementById("food-name").value;
+        var meal = document.getElementById("meal").value;
+        var mealSections = document.querySelector(".meal-sections");
+
+        // Create a new section for the meal if it doesn't exist
+        var existingSection = document.getElementById(meal + "-section");
+        if (!existingSection) {
+            var newSection = document.createElement("div");
+            newSection.setAttribute("id", meal + "-section");
+            newSection.innerHTML = "<h3>" + capitalizeFirstLetter(meal) + "</h3><ul></ul>";
+
+            // Append the new section based on meal order
+            switch (meal) {
+                case "breakfast":
+                    mealSections.insertBefore(newSection, mealSections.firstChild);
+                    break;
+                case "lunch":
+                    if (!document.getElementById("breakfast-section")) {
+                        mealSections.appendChild(newSection);
+                    } else {
+                        mealSections.insertBefore(newSection, document.getElementById("dinner-section"));
+                    }
+                    break;
+                case "dinner":
+                    if (!document.getElementById("lunch-section")) {
+                        mealSections.appendChild(newSection);
+                    } else {
+                        mealSections.insertBefore(newSection, document.getElementById("snack-section"));
+                    }
+                    break;
+                case "snack":
+                    mealSections.appendChild(newSection);
+                    break;
+                default:
+                    mealSections.appendChild(newSection);
+                    break;
+            }
+        }
+        
+        // Add the food item to the corresponding meal section
+        var foodList = document.getElementById(meal + "-section").querySelector("ul");
+        var newItem = document.createElement("li");
+        newItem.textContent = foodName;
+        newItem.setAttribute("oncontextmenu", "showContextMenu(event)");
+        foodList.appendChild(newItem);
+    }
+
+    function addWater() {
+        var waterAmount = document.getElementById("water-amount").value;
+        var waterList = document.getElementById("water-list");
+        var newItem = document.createElement("li");
+        newItem.textContent = waterAmount + " oz";
+        newItem.setAttribute("oncontextmenu", "showContextMenu(event)");
+        waterList.appendChild(newItem);
+    }
+
+    function endDay() {
+        // Generate the weekly progress bar graph
+        var weeklyProgress = document.getElementById("weekly-progress");
+        // Logic to generate the bar graph based on the data collected
+        // Reset the daily intake and water intake sections for the next day
+        document.querySelector(".meal-sections").innerHTML = "";
+        document.getElementById("water-list").innerHTML = "";
+    }
+
+    function showContextMenu(event) {
+        event.preventDefault(); // Prevent default right-click menu
+        var contextMenu = document.createElement("div");
+        contextMenu.innerHTML = "<button onclick='editItem(this)'>Edit</button><button onclick='removeItem(this)'>Remove</button>";
+        contextMenu.style.position = "absolute";
+        contextMenu.style.top = event.clientY + "px";
+        contextMenu.style.left = event.clientX + "px";
+        contextMenu.style.backgroundColor = "#FFF";
+        contextMenu.style.border = "1px solid #000";
+        contextMenu.style.padding = "5px";
+        contextMenu.style.zIndex = "1000";
+        document.body.appendChild(contextMenu);
+        document.addEventListener("click", function(e) {
+            if (!contextMenu.contains(e.target)) {
+                contextMenu.remove();
+            }
+        });
+    }
+
+    function editItem(item) {
+        var newText = prompt("Edit item:", item.parentNode.parentNode.textContent.trim());
+        if (newText !== null && newText.trim() !== "") {
+            item.parentNode.parentNode.textContent = newText.trim();
+        }
+    }
+
+    function removeItem(item) {
+        item.parentNode.parentNode.remove();
+    }
+
+    // Function to capitalize the first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+</script>
+
+
+</body>
+</html>
