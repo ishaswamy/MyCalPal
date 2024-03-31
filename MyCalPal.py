@@ -40,23 +40,29 @@ Imports the database for MongoDB.
 import MyClassPal;
 
 from pymongo import MongoClient
+import urllib.parse
+
+# MongoDB connection string with properly escaped username and password
+username = "eij"
+password = "c@lori3"
+cluster_url = "cluster0.ydug9w5.mongodb.net"
+uri = f"mongodb+srv://{urllib.parse.quote_plus(username)}:{urllib.parse.quote_plus(password)}@{cluster_url}/?retryWrites=true&w=majority"
 
 # Connect to MongoDB
-#client = MongoClient("mongodb+srv://cluster0.ydug9w5.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority&appName=Cluster0")
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient(uri)
 
 # Access a database
 db = client['MyCalPal']
 
 # Access a collection
-foodItem = db['item']
+foodItem = db['Food Intake']
 
 # Insert a document
-result = foodItem.insert_one({'name': 'Orange', 'calories': 90})
-print(result)
+#result = foodItem.insert_one({'name': 'Orange', 'calories': 90})
+#print(result)
 
 # Access a collection
-loginInfo = db['user']
+loginInfo = db['Credentials']
 
 
 
