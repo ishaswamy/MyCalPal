@@ -26,7 +26,7 @@ loginInfo = db['Credentials']
 foodItem = db['Food Intake']
 waterItem = db['Water Intake']
 
-# result = foodItem.insert_one({'name': 'Orange', 'meal': 'Breakfast', 'calories': 180})
+#result = foodItem.insert_one({'name': 'Orange', 'meal': 'Breakfast', 'calories': 180})
 
 
 @app.route('/')
@@ -60,11 +60,13 @@ def add_food():
     food_name = request.form.get('food-name')
     meal = request.form.get('meal')
     calories = request.form.get('calories')
+    
 
     # Insert food intake data into the database
-    # result = foodItem.insert_one({'name': 'Orange', 'meal': 'Breakfast', 'calories': 180})
+    
     try:
         foodItem.insert_one({'name': food_name, 'meal': meal, 'calories': calories})
+        
         return jsonify({'message': "Food intake added successfully."})
     except Exception as e:
         return jsonify({'error': str(e)})
