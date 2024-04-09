@@ -24,14 +24,15 @@ header h1 {
     margin: 10; /* Remove default margin */
 }
 
-.daily-intake, .water-intake {
+.daily-intake, .water-intake, .exercise-section {
     display: inline-block;
     width: calc(50% - 20px); /* Set width to 50% of the container width minus margins */
-    max-width: 500px; /* Limit maximum width */
+    max-width: 450px; /* Limit maximum width */
     height: 300px;
     margin: 10px auto; /* Center horizontally and add space from the top */
     padding: 10px;
     vertical-align: top; /* Align sections from the top */
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 1000px) {
@@ -143,4 +144,27 @@ header h1 {
 
 footer{
     text-align: center;
+}
+
+.exercise-section {
+    background-color: #ffb3d9; /* Light pastel pink background */
+    border: 2px solid #ff66b3; /* Light pink border */
+    text-align: center;
+    opacity: 95%;
+}
+
+.exercise-section h2, .exercise-section h3 {
+    color: #ff66b3; /* Pink titles and buttons */
+}
+
+.exercise-section button {
+    color: white;
+    background-color: #f285bc;
+    border: 1px solid #ff66b3;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.exercise li {
+    list-style-type: disc; /* Round bullet points for exercise items */
 }
