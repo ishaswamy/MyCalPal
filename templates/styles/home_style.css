@@ -27,7 +27,7 @@ header h1 {
 .daily-intake, .water-intake {
     display: inline-block;
     width: calc(50% - 20px); /* Set width to 50% of the container width minus margins */
-    max-width: 500px; /* Limit maximum width */
+    max-width: 750px; /* Limit maximum width */
     height: 300px;
     margin: 10px auto; /* Center horizontally and add space from the top */
     padding: 10px;

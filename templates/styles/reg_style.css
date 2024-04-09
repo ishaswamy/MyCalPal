@@ -5,6 +5,7 @@ body {
     background-image: url('https://i.pinimg.com/564x/9a/81/c5/9a81c574d6b26928f9a3c5086039b45e.jpg');
     background-size: cover;
     color: #fff;
+    text-align: center;
 }
 
 .container {
