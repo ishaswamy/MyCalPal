@@ -12,10 +12,10 @@
         </header>
         
         <div class="log in">
-            <form>
+            <form action="/login" method="POST"> <!-- Added action and method attributes -->
                 <h3>Login to start tracking</h3>
                 <label for="username">Username</label>
-				<input type="text" name="username" id="username" maxlength="15">
+                <input type="text" name="username" id="username" maxlength="15">
                 <br>
                 <br>
                 <label for="password">Password</label>
@@ -26,6 +26,9 @@
                 <br>
                 <br>
             </form>
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
         </div>
         
         <footer>

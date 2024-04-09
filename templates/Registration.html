@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
    <head>
-        <title>Sign Up</title>
+        <title>Sign Up - MyCalPal</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="styles/reg_style.css">
+        <link rel="stylesheet" type="text/css" href="/styles/reg_style.css">
     </head>
     
     <body>
@@ -13,73 +13,54 @@
             <p>This will help us customize your experience within MyCalPal</p>
         </header>
         
-        <div class="user info">
-            <form>
+        <div class="user-info">
+            <form action="/signup" method="POST">
             <h4>Please enter the following information:</h4>
             <label for="name">Name: </label>
-            <input type="text" name="name" id="name" pattern="[a-zA-Z]">
-            <br>
-            <br>
-            <label for="name">Username: </label>
-            <input type="text" name="username" id="username" maxlength="15">
-            <br>
-            <br>
+            <input type="text" name="name" id="name" required>
+            <br><br>
+            <label for="username">Username: </label>
+            <input type="text" name="username" id="username" maxlength="15" required>
+            <br><br>
             <label for="password">Password: </label>
-            <input type="password" name="password" id="password" minlength="8" maxlength="15" pattern="[a-zA-Z0-9]+">
-            <br>
-            <br>
-            <label for="bday">Birthday:</label>
-            <input type="number" step="1" name="bday" id="age">
-            <br>
-            <br>
+            <input type="password" name="password" id="password" minlength="8" maxlength="15" pattern="[a-zA-Z0-9]+" required>
+            <br><br>
+            <label for="birth_month">Birthday:</label>
+            <input type="number" step="1" name="birth_month" id="birth_month" min="1" max="12" placeholder="MM" style="width: 40px;" required> /
+            <input type="number" step="1" name="birth_day" id="birth_day" min="1" max="31" placeholder="DD" style="width: 40px;" required> /
+            <input type="number" step="1" name="birth_year" id="birth_year" min="1900" max="2024" placeholder="YYYY" style="width: 60px;" required>
+            <br><br>
             <span>Sex:</span>
-            <input type="radio" name="sex" id="female" value="female">
+            <input type="radio" name="sex" id="female" value="female" required>
             <label for="female">Female</label>
-            <input type="radio" name="sex" id="male" value="male">
+            <input type="radio" name="sex" id="male" value="male" required>
             <label for="male">Male</label>
-            <br>
-            <br>
+            <br><br>
             <label for="weight">Weight(lbs): </label>
-            <input type="number" step="1" name="weight" id="weight">
-            <br>
-            <br>
-            <label for="height">Height: </label>
-            <input type="number" step="1" name="height" id="feet" max="8">
+            <input type="number" step="any" name="weight" id="weight" required>
+            <br><br>
+            <label for="height_feet">Height: </label>
+            <input type="number" step="any" name="height_feet" id="feet" max="8" required>
             <span>Feet</span>
-            <input type="number" step="1" name="height" id="inches" min="0" max="11">
+            <input type="number" step="any" name="height_inches" id="inches" min="0" max="11" required>
             <span>Inches</span>
-            <br>
-            <br>
-            <input type="submit" value="Get Started">
-            <br>
-            <br>
-            </form>
-        </div>
-        
-        <div class="User goals">
-            <form>
-            <br>
-            <h4>Let us know your goals!</h4>
-            <span>Why are you tracking your caloric intake?</span>
-            <br>
-            <textarea id="reason" name="reason" placeholder="Enter your reason here" rows="8" cols="40"></textarea>
-            <br>
-            <br>
+            <br><br>
+            <textarea id="reason" name="reason" placeholder="Enter your reason here" rows="8" cols="40" required></textarea>
+            <br><br>
             <span>What is your weight goal?</span>
             <br>
-            <input type="radio" name="weight-goal" id="gain" value="gain">
+            <input type="radio" name="weight_goal" id="gain" value="gain" required>
             <label for="gain">I want to <b>gain</b> weight</label>
             <br>
-            <input type="radio" name="weight-goal" id="lose" value="lose">
+            <input type="radio" name="weight_goal" id="lose" value="lose" required>
             <label for="lose">I want to <b>lose</b> weight</label>
             <br>
-            <input type="radio" name="weight-goal" id="maintain" value="maintain">
+            <input type="radio" name="weight_goal" id="maintain" value="maintain" required>
             <label for="maintain">I want to <b>maintain</b> my current weight</label>
-            <br>
-            <br>
+            <br><br>
+            <input type="submit" name="submit" value="Submit"> <!-- Added name attribute to the submit button -->
+            <br><br>
             </form>
-            
-            
         </div>
     </body>
 </html>
