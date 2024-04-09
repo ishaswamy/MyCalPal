@@ -74,7 +74,7 @@ def add_food():
 
 @app.route('/add_water', methods=['POST'])
 def add_water():
-    water_amount = request.form['water_amount']
+    water_amount = request.form.get('water_amount')
     waterItem.insert_one({'water_amount': water_amount})
     return jsonify({'message': "Water intake added successfully."})
 
