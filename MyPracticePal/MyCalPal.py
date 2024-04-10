@@ -103,7 +103,18 @@ def myChartPal(username):
     print("\n")
     mcc.mySpamPal(username)
     # chart_choice is mainly for the 'menu' screen for the calorie chart.
-    chart_choice = input("\nWould you like to: \n1. Add an item.\n2. Delete an item.\n3. Return to main login page.\n")
+    choice = input("\nWould you like to: \n1. Add an item.\n2. Delete an item.\n3. Return to main login page.\n4.Log-Out\n")
+
+    while True:
+        if choice == '1': # Add an Item
+            myCaloriePal(username)
+        elif choice == '2': # Delete an Item
+            mcc.myDeletePal(username)
+        elif choice == '3': # Return to login / My Login
+            myLoggedIn(username)
+        elif choice == '4': # LogOut
+            myOutPal()
+
 
 def myCaloriePal(username):
     while True:
