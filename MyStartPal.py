@@ -81,6 +81,12 @@ def home():
     # Render the Home.html template
     return render_template('Home.html')
 
+
+@app.route('/LogIn.html')
+def login_page():
+    return render_template('LogIn.html')
+
+
 @app.route('/add_food', methods=['POST'])
 def add_food():
     food_name = request.form.get('food-name')

@@ -10,6 +10,7 @@
 
     <header>
         <h1>Welcome to Your Calorie Tracker</h1>
+        <button onclick="logout()">Logout</button>
     </header>
 
     <div class="container">
@@ -81,11 +82,16 @@
 
         function endDay() {
             // Generate the weekly progress bar graph
-        var weeklyProgress = document.getElementById("weekly-progress");
-        // Logic to generate the bar graph based on the data collected
-        // Reset the daily intake and water intake sections for the next day
-        document.querySelector(".meal-sections").innerHTML = "";
-        document.getElementById("water-list").innerHTML = "";
+            var weeklyProgress = document.getElementById("weekly-progress");
+            // Logic to generate the bar graph based on the data collected
+            // Reset the daily intake and water intake sections for the next day
+            document.querySelector(".meal-sections").innerHTML = "";
+            document.getElementById("water-list").innerHTML = "";
+        }
+
+        function logout() {
+            // Perform logout functionality here, such as redirecting to the logout route
+            window.location.href = "/LogIn.html";
         }
     </script>
 

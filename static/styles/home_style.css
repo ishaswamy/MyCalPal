@@ -10,7 +10,6 @@ body {
     flex-direction: column; /* Arrange children vertically */
 }
 
-
 header {
     display: flex;
     align-items: center; /* Vertically center the content */
@@ -40,7 +39,6 @@ header h1 {
         margin: 10px auto; /* Center horizontally */
     }
 }
-
 
 .section {
     margin: 20px;
@@ -140,7 +138,16 @@ header h1 {
     height: 40px;
 }
 
-
-footer{
+.logout {
     text-align: center;
+    margin-top: 20px;
+}
+
+.logout button {
+    color: white;
+    background-color: #555;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
