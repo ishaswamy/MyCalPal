@@ -154,7 +154,11 @@ def myCaloriePal(username):
             myOutPal()
 
 def myIntakePal(username): # Weekly Intake, Option 3
-    signup_or_login()
+    calories = mcc.myWeekPal(username)
+    
+    print(f"Consumed approximately {calories} this week.")
+
+    myLoggedIn(username)
 
 def myOutPal(): # Log_Out
     print("Logging out...\n")
@@ -174,7 +178,7 @@ def myLoggedIn(username):
     elif choice == '2':
         myCaloriePal(username)
     elif choice == '3':
-        myIntakePal()
+        myIntakePal(username)
     elif choice == '4':
         myOutPal()
 
