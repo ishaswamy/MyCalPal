@@ -19,7 +19,7 @@
         <div class="meal-sections">
             <!-- Loop through food items and display each item -->
             {% for food_item in food_items %}
-            <div>{{ food_item.name }} - {{ food_item.meal }} - {{ food_item.calories }} calories</div>
+            <div class="food-item">{{ food_item.name }} - {{ food_item.meal }} - {{ food_item.calories }} calories</div>
             {% endfor %}
         </div>
         <button onclick="openFoodPopup()">Add Food Intake</button>

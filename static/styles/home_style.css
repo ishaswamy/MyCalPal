@@ -151,3 +151,13 @@ header h1 {
     padding: 5px 10px;
     cursor: pointer;
 }
+
+.food-item {
+    background-color: transparent; /* Remove background color */
+    border: none; /* Remove border */
+    color: #006400; /* Dark green text color */
+    font-family: "Georgia", Times, serif; /* Use a pretty font */
+    font-size: 18px; /* Update font size */
+    padding: 5px 0; /* Adjust padding */
+    margin-bottom: 5px; /* Add space between food items */
+}
