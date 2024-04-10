@@ -190,8 +190,14 @@ class MyCalcPal:
             'time':current_time })
 
     def mySpamPal(self, username):
-        userDb = db[username] # logs the user into their personal database
+        userDb = db[username]  # logs the user into their personal database
         cursor = userDb.find()
-
-        for document in cursor:
-            print(document)
+        
+        print("Calorie Chart:")
+        print("{:<5} {:<20} {:<20} {:<10} {:<20}".format("No.", "Name", "Single Calories", "Quantity", "Total Calories"))
+        print("-" * 75)
+        
+        for idx, document in enumerate(cursor, 1):
+            print("{:<5} {:<20} {:<20} {:<10} {:<20}".format(idx, document['name'], document['calories'], document['quantity'], document['total_calories']))
+            
+        print("-" * 75)
