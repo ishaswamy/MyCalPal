@@ -201,3 +201,48 @@ class MyCalcPal:
             print("{:<5} {:<20} {:<20} {:<10} {:<20}".format(idx, document['name'], document['calories'], document['quantity'], document['total_calories']))
             
         print("-" * 75)
+
+    def myDeletePal(self, username):
+        userDb = db[username]
+        cursor = userDb.find()
+        
+        for idx, document in enumerate(cursor, 1):
+            print("{:<5} {:<20} {:<20} {:<10} {:<20}".format(idx, document['name'], document['calories'], document['quantity'], document['total_calories']))
+        
+        print("-" * 75)
+
+        if userDb.count_documents({}) == 0:
+            print("Chart is empty.")
+            return
+
+        # Prompt user for the item to delete
+        choice = input("Enter the number of the item you want to delete (or 'cancel' to abort): ").strip()
+    
+        if choice.lower() == 'cancel':
+            print("Deletion aborted.")
+            return
+        
+        try:
+            choice = int(choice)
+        except ValueError:
+            print("Invalid input. Please enter a valid item number.")
+            return
+        
+        # Get the selected document
+        cursor.rewind() # go to beginning
+        selected_document = None
+        for idx, document in enumerate(cursor, 1):
+            if idx == choice:
+                selected_document = document
+                break
+
+        if selected_document:
+            confirm = input(f"Are you sure you want to delete {selected_document['name']}? (yes/no): ").strip().lower()
+            if confirm == 'yes':
+                userDb.delete_one({'_id': selected_document['_id']})
+                print(f"{selected_document['name']} has been successfully deleted from your calorie chart.")
+            else:
+                print("Deletion canceled.")
+        else:
+            print("Invalid item number. Please select a valid item.")
+
