@@ -78,8 +78,11 @@ def login_process():
 
 @app.route('/Home.html')
 def home():
-    # Render the Home.html template
-    return render_template('Home.html')
+    # Retrieve all food items from the database
+    food_items = list(foodItem.find())
+    # Render the Home.html template and pass the food items
+    return render_template('Home.html', food_items=food_items)
+
 
 
 @app.route('/LogIn.html')
