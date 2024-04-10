@@ -246,3 +246,12 @@ class MyCalcPal:
         else:
             print("Invalid item number. Please select a valid item.")
 
+    def myWeekPal(self, username):
+        userDb = db[username]
+        cursor = userDb.find()
+        calories = 0
+
+        for document in cursor:
+            calories += document['total_calories']
+
+        return calories
