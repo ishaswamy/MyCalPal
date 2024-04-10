@@ -156,7 +156,7 @@ def myCaloriePal(username):
 def myIntakePal(username): # Weekly Intake, Option 3
     calories = mcc.myWeekPal(username)
     
-    print(f"Consumed approximately {calories} this week.")
+    print(f"\nConsumed approximately {calories} this week.\n")
 
     myLoggedIn(username)
 
