@@ -104,3 +104,7 @@ h1, h3 {
 span {
     color: #4CAF50;
 }
+.error {
+    color: red;
+    margin-top: 10px; /* Add margin space at the top */
+}

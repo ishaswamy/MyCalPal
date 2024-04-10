@@ -74,7 +74,9 @@ def login_process():
         # Redirect to Home.html upon successful login
         return redirect(url_for('home'))
     else:
-        return "Invalid username or password."
+        # Render the login page with an error message
+        return render_template('LogIn.html', error_message="Invalid username or password.")
+
 
 @app.route('/Home.html')
 def home():
