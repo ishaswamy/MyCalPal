@@ -96,9 +96,13 @@ def add_food():
     # Insert food intake data into the database
     try:
         foodItem.insert_one({'name': food_name, 'meal': meal, 'calories': calories})
-        return jsonify({'message': "Food intake added successfully."})
+        # Retrieve all food items from the database
+        all_food_items = foodItem.find({})
+        # Render the Home.html template with the updated food items
+        return render_template('Home.html', food_items=all_food_items)
     except Exception as e:
         return jsonify({'error': str(e)})
+
 
 if __name__ == "__main__":
     app.run()
