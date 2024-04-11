@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from pymongo import MongoClient
 import urllib.parse
+import hashlib  
+
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 # MongoDB connection string with properly escaped username and password
 username = "eij"
@@ -43,6 +46,7 @@ def signup():
     if loginInfo.find_one({"username": username}):
         return "Username already exists. Please choose another one."
     else:
+        hashed_username = hashlib.sha256(username.encode()).hexdigest()
         # Insert user information into the database
         result = loginInfo.insert_one({
             'name': name,
@@ -54,8 +58,13 @@ def signup():
             'height_feet': height_feet,
             'height_inches': height_inches,
             'reason': reason,
-            'weight_goal': weight_goal
+            'weight_goal': weight_goal,
+            'collection_name': hashed_username
         })
+        
+        db.create_collection(f'{hashed_username}')
+                    
+                   
         # Print the result of the database insertion
         print(f"Database Insertion Result: {result.inserted_id}")
         # Redirect to Home.html upon successful account creation
@@ -67,10 +76,13 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login_process():
+    session.clear()
     username = request.form['username']
     password = request.form['password']
     user = loginInfo.find_one({"username": username, "password": password})
     if user:
+        # Set the username in the session
+        session['username'] = username
         # Redirect to Home.html upon successful login
         return redirect(url_for('home'))
     else:
@@ -80,11 +92,15 @@ def login_process():
 
 @app.route('/Home.html')
 def home():
-    # Retrieve all food items from the database
-    food_items = list(foodItem.find())
-    # Render the Home.html template and pass the food items
-    return render_template('Home.html', food_items=food_items)
-
+    # Retrieve all food items from the currently logged-in user's collection
+    username = session.get('username')
+    if username:
+        user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
+        food_items = list(user_collection.find())
+        # Render the Home.html template and pass the food items
+        return render_template('Home.html', food_items=food_items)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/LogIn.html')
@@ -98,36 +114,19 @@ def add_food():
     meal = request.form.get('meal')
     calories = request.form.get('calories')
 
-    # Insert food intake data into the database
+    # Retrieve the username from the session
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Insert food intake data into the user's collection in the database
     try:
-        foodItem.insert_one({'name': food_name, 'meal': meal, 'calories': calories})
-        # Retrieve all food items from the database
-        all_food_items = foodItem.find({})
-        # Render the Home.html template with the updated food items
-        return render_template('Home.html', food_items=all_food_items)
+        user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
+        user_collection.insert_one({'name': food_name, 'meal': meal, 'calories': calories})
+        # Redirect to Home.html upon successful insertion
+        return redirect(url_for('home'))
     except Exception as e:
         return jsonify({'error': str(e)})
-
-
-
-#added logic for the implementation of food item search bar
-'''Sample items, replace with actiual database interactions:
-food_items =[
-    {"name": "Apple"},
-    {"name": "Banana"},
-    {"name": "Orange"},
-]
-'''
-
-@app.route('/')
-def index():
-    return render_template('index.html', food_items=food_items)
-
-@app.route('/food_items')
-def get_food_items():
-    return jsonify(food_items)
-
-
 
 
 if __name__ == "__main__":
