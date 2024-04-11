@@ -109,5 +109,26 @@ def add_food():
         return jsonify({'error': str(e)})
 
 
+
+#added logic for the implementation of food item search bar
+'''Sample items, replace with actiual database interactions:
+food_items =[
+    {"name": "Apple"},
+    {"name": "Banana"},
+    {"name": "Orange"},
+]
+'''
+
+@app.route('/')
+def index():
+    return render_template('index.html', food_items=food_items)
+
+@app.route('/food_items')
+def get_food_items():
+    return jsonify(food_items)
+
+
+
+
 if __name__ == "__main__":
     app.run()

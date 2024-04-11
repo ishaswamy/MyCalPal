@@ -27,7 +27,10 @@
             <h3>Add Food Intake</h3>
             <form id="food-form" action="/add_food" method="POST">
                 <label for="food-name">Food Name:</label>
-                <input type="text" id="food-name" name="food-name">
+                <input list="foods" id="food-name" name="food-name">
+                <datalist id="foods">
+
+                </datalist>
                 <label for="meal">Meal:</label>
                 <select id="meal" name="meal">
                     <option value="breakfast">Breakfast</option>
@@ -96,6 +99,22 @@
         // Perform logout functionality here, such as redirecting to the logout route
         window.location.href = "/LogIn.html";
     }
+
+    function fetchFoodItems() {
+        fetch('/food_items') //replace this with the endpoint URL
+            .then(response => response.json())
+            .then(data => {
+                const foodList = document.getElementById('foods');
+                data.forEach(food => {
+                    const option = document.createElement('option');
+                    option.value = food.name;
+                    foodList.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching food items: ', error))
+    }
+
+    window.addEventListener('load', fetchFoodItems);
 </script>
 
 </body>

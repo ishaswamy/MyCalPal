@@ -138,18 +138,15 @@ header h1 {
     height: 40px;
 }
 
-.logout {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.logout button {
-    color: white;
-    background-color: #555;
-    border: 1px solid #333;
+header button {
+    color: burlywood;
+    background-color: #f0f0d5;
+    border: 1px solid burlywood;
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
+    margin-top: 10px; /* Add space between lists and buttons */
+    margin-right: 10px;
 }
 
 .food-item {
