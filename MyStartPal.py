@@ -96,9 +96,9 @@ def home():
     username = session.get('username')
     if username:
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
-        food_items = list(user_collection.find())
+        items = list(user_collection.find())
         # Render the Home.html template and pass the food items
-        return render_template('Home.html', food_items=food_items)
+        return render_template('Home.html', items=items)
     else:
         return redirect(url_for('login'))
 
@@ -107,6 +107,25 @@ def home():
 def login_page():
     return render_template('LogIn.html')
 
+@app.route('/add_water', methods=['POST'])
+def add_water():
+    water_amount = request.form.get('water-amount')
+    meal = request.form.get('meal')
+    calories = request.form.get('calories')
+
+    # Retrieve the username from the session
+    username = session.get('username')
+    if not username:
+        return redirect(url_for('login'))
+
+    # Insert food intake data into the user's collection in the database
+    try:
+        user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
+        user_collection.insert_one({'name': "water", 'ounces': water_amount})
+        # Redirect to Home.html upon successful insertion
+        return redirect(url_for('home'))
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 @app.route('/add_food', methods=['POST'])
 def add_food():

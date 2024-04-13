@@ -18,8 +18,10 @@
         <h2>Daily Intake</h2>
         <div class="meal-sections">
             <!-- Loop through food items and display each item -->
-            {% for food_item in food_items %}
-            <div class="food-item">{{ food_item.name }} - {{ food_item.meal }} - {{ food_item.calories }} calories</div>
+            {% for item in items %}
+                {% if item.name != 'water' %}
+                    <div class="item">{{ item.name }} - {{ item.meal }} - {{ item.calories }} calories</div>
+                {% endif %}
             {% endfor %}
         </div>
         <button onclick="openFoodPopup()">Add Food Intake</button>
@@ -44,11 +46,19 @@
             </form>
         </div>
     </section>
+    
+     
+    
 
     <section class="water-intake section">
         <h2>Water Intake</h2>
         <ul id="water-list">
-            <!-- Water intake data will be displayed here -->
+            <!-- Loop through water intake items and display the amount for items with name 'water' -->
+            {% for item in items %}
+                {% if item.name == 'water' %}
+                    <li>{{ item.ounces }} ounces</li>
+                {% endif %}
+            {% endfor %}
         </ul>
         <button onclick="openWaterPopup()">Add Water Intake</button>
         <div id="water-popup" style="display: none;">
@@ -60,6 +70,7 @@
             </form>
         </div>
     </section>
+    
 
     <section class="end-day">
         <button onclick="endDay()">End Day</button>
