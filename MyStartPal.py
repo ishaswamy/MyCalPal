@@ -147,6 +147,25 @@ def add_food():
     except Exception as e:
         return jsonify({'error': str(e)})
 
+@app.route('/food_items')
+def get_food_items():
+    try:
+        # Access the "Potential Food Collection" from the "MyCalPal" database
+        potential_food_collection = db['Potential Food Collection']
+        
+        # Fetch all documents and extract the "name" attribute
+        food_items_cursor = potential_food_collection.find({}, {'name': 1})
+        
+        # Convert cursor to list of dictionaries
+        food_list = [item['name'] for item in food_items_cursor]
+        
+        print(f"Fetched Food Items: {food_list}")  # Debug print
+        
+        # Return food items as JSON response
+        return jsonify(food_list)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run()
