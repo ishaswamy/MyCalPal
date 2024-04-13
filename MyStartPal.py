@@ -111,13 +111,13 @@ def add_food():
 
 
 #added logic for the implementation of food item search bar
-'''Sample items, replace with actiual database interactions:
+#Sample items, replace with actiual database interactions:
 food_items =[
     {"name": "Apple"},
     {"name": "Banana"},
     {"name": "Orange"},
 ]
-'''
+
 
 @app.route('/')
 def index():
