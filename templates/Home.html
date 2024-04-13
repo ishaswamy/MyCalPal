@@ -11,6 +11,7 @@
 <header>
     <h1>Welcome to Your Calorie Tracker</h1>
     <button onclick="logout()">Logout</button>
+    <span id="current-date-time"></span> 
 </header>
 
 <div class="container">
@@ -87,6 +88,24 @@
 </footer>
 
 <script>
+     document.addEventListener("DOMContentLoaded", function() {
+        const dateTimeElement = document.getElementById('current-date-time');
+        if(dateTimeElement) {
+            const currentDate = new Date();
+            const dateTimeString = currentDate.toLocaleString();
+            dateTimeElement.textContent = dateTimeString;
+        } else {
+            console.log("Error: 'current-date-time' element not found");
+        }
+
+        // Keep the interval to update time every second
+        setInterval(function() {
+            const currentDate = new Date();
+            const dateTimeString = currentDate.toLocaleString();
+            dateTimeElement.textContent = dateTimeString;
+        }, 1000);
+    });
+    
     function openFoodPopup() {
         var popup = document.getElementById("food-popup");
         popup.style.display = "block";
