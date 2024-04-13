@@ -17,35 +17,48 @@
 <div class="container">
     <section class="daily-intake section">
         <h2>Daily Intake</h2>
+        <!-- Inside the section with class="daily-intake section" -->
         <div class="meal-sections">
-            <!-- Loop through food items and display each item -->
             {% for item in items %}
                 {% if item.name != 'water' %}
-                    <div class="item">{{ item.name }} - {{ item.meal }} - {{ item.calories }} calories</div>
+                    <div class="item">
+                        {{ item.name }} - {{ item.meal }} - {{ item.calories_per_serving }} calories per serving
+                        {% if item.grams %} ({{ item.grams }} grams - {{ item.total_calories }} calories) {% endif %}
+                    </div>
                 {% endif %}
             {% endfor %}
         </div>
+
+        
         <button onclick="openFoodPopup()">Add Food Intake</button>
         <div id="food-popup" class="popup" style="display: none;">
-            <h3>Add Food Intake</h3>
-            <form id="food-form" action="/add_food" method="POST">
-                <label for="food-name">Food Name:</label>
-                <input list="foods" id="food-name" name="food-name">
-                <datalist id="foods">
-                    <!-- Food options will be dynamically populated here -->
-                </datalist>
-                <label for="meal">Meal:</label>
-                <select id="meal" name="meal">
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                    <option value="snack">Snack</option>
-                </select>
-                <label for="calories">Calories:</label>
-                <input type="text" id="calories" name="calories">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+    <h3>Add Food Intake</h3>
+    <form id="food-form" action="/add_food" method="POST">
+        <label for="food-name">Food Name:</label>
+        <input list="foods" id="food-name" name="food-name">
+        <datalist id="foods">
+            <!-- Food options will be dynamically populated here -->
+        </datalist>
+        
+        <label for="grams">Grams:</label>
+        <input type="text" id="grams" name="grams">
+        
+        <button type="button" onclick="checkCalories()">Check Calories</button> <!-- Check Calories button -->
+        
+        <label for="meal">Meal:</label>
+        <select id="meal" name="meal">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+        </select>
+        
+        <label for="calories">Calories:</label>
+        <input type="text" id="calories" name="calories">
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
     </section>
     
      
@@ -144,7 +157,42 @@
         .catch(error => console.error('Error fetching food items: ', error))
 }
 
-    
+function checkCalories() {
+    const foodNameInput = document.getElementById("food-name");
+    const gramsInput = document.getElementById("grams");
+    const caloriesInput = document.getElementById("calories");
+
+    const foodName = foodNameInput.value;
+    const grams = gramsInput.value;
+
+    if (!foodName || !grams) {
+        alert("Please enter both food name and grams.");
+        return;
+    }
+
+    // Fetch calories_per_serving and serving_size_grams from server
+    fetch(`/food_info?food_name=${foodName}`)
+        .then(response => response.json())
+        .then(data => {
+            const caloriesPerServing = data.calories_per_serving;
+            const servingSizeGrams = data.serving_size_grams;
+            
+            if (!caloriesPerServing || !servingSizeGrams) {
+                alert("Information not found for this food.");
+                return;
+            }
+
+            const totalCalories = (parseInt(grams) * caloriesPerServing) / servingSizeGrams;
+            caloriesInput.value = totalCalories.toFixed(2); // Set total calories in the calories input field
+        })
+        .catch(error => {
+            console.error('Error fetching food information: ', error);
+            alert("Error fetching food information. Please try again.");
+        });
+}
+
+
+
 
     window.addEventListener('load', fetchFoodItems);
 </script>

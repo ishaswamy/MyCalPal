@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from pymongo import MongoClient
 import urllib.parse
@@ -112,6 +113,7 @@ def add_water():
     water_amount = request.form.get('water-amount')
     meal = request.form.get('meal')
     calories = request.form.get('calories')
+    grams = request.form.get('grams')
 
     # Retrieve the username from the session
     username = session.get('username')
@@ -132,6 +134,7 @@ def add_food():
     food_name = request.form.get('food-name')
     meal = request.form.get('meal')
     calories = request.form.get('calories')
+    grams = request.form.get('grams')
 
     # Retrieve the username from the session
     username = session.get('username')
@@ -141,7 +144,7 @@ def add_food():
     # Insert food intake data into the user's collection in the database
     try:
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
-        user_collection.insert_one({'name': food_name, 'meal': meal, 'calories': calories})
+        user_collection.insert_one({'name': food_name, 'meal': meal, 'calories': calories, 'grams': grams})
         # Redirect to Home.html upon successful insertion
         return redirect(url_for('home'))
     except Exception as e:
@@ -166,6 +169,40 @@ def get_food_items():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/calories_per_serving', methods=['GET'])
+def get_calories_per_serving():
+    food_name = request.args.get('food_name')
+    try:
+        potential_food_collection = db['Potential Food Collection']
+        food_item = potential_food_collection.find_one({"name": food_name})
+        
+        if not food_item:
+            return jsonify({'error': 'Food item not found'}), 404
+        
+        calories_per_serving = food_item.get('calories_per_serving', 0)
+        return jsonify({'calories_per_serving': calories_per_serving})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/food_info', methods=['GET'])
+def get_food_info():
+    food_name = request.args.get('food_name')
+    try:
+        potential_food_collection = db['Potential Food Collection']
+        food_item = potential_food_collection.find_one({"name": food_name})
+        
+        if not food_item:
+            return jsonify({'error': 'Food item not found'}), 404
+        
+        calories_per_serving = food_item.get('calories_per_serving', 0)
+        serving_size_grams = food_item.get('serving_size_grams', 1)  # Default to 1 if serving_size_grams is not available
+        
+        return jsonify({
+            'calories_per_serving': calories_per_serving,
+            'serving_size_grams': serving_size_grams
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     app.run()
