@@ -149,7 +149,7 @@ header button {
     margin-right: 10px;
 }
 
-.food-item {
+.item {
     background-color: transparent; /* Remove background color */
     border: none; /* Remove border */
     color: #006400; /* Dark green text color */
