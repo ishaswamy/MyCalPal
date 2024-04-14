@@ -91,17 +91,34 @@ def login_process():
         return render_template('LogIn.html', error_message="Invalid username or password.")
 
 
+from datetime import datetime
+
 @app.route('/Home.html')
 def home():
     username = session.get('username')
     if username:
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
         
-        # Fetch food items
-        items = list(user_collection.find({"name": {"$ne": "water"}}))
+        # Get current date
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        
+        # Fetch food items logged on the current day
+        items = list(user_collection.find({
+            "name": {"$ne": "water"},
+            "datetime": {"$regex": f"^{current_date}"}
+        }))
         
         # Fetch water items separately
-        water_items = list(user_collection.find({"name": "water"}))
+        water_items = list(user_collection.find({
+            "name": "water",
+            "datetime": {"$regex": f"^{current_date}"}
+        }))
+        
+        # Calculate total calories
+        total_calories = sum(item['calories'] for item in items)
+        
+        # Calculate total ounces consumed for water
+        total_ounces = sum(int(item['ounces']) for item in water_items)
         
         # Group food items by meal
         meals = {
@@ -115,9 +132,11 @@ def home():
             if 'meal' in item:
                 meals[item['meal']].append(item)
         
-        return render_template('Home.html', meals=meals, water_items=water_items)
+        return render_template('Home.html', meals=meals, water_items=water_items, total_calories=total_calories, total_ounces=total_ounces)
     else:
         return redirect(url_for('login'))
+
+
 
 
 
@@ -125,26 +144,36 @@ def home():
 def login_page():
     return render_template('LogIn.html')
 
+from datetime import datetime
+
 @app.route('/add_water', methods=['POST'])
 def add_water():
     water_amount = request.form.get('water-amount')
     meal = request.form.get('meal')
-    calories = request.form.get('calories')
-    grams = request.form.get('grams')
-
+    
+    # Get current date and time
+    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
     # Retrieve the username from the session
     username = session.get('username')
     if not username:
         return redirect(url_for('login'))
 
-    # Insert food intake data into the user's collection in the database
+    # Insert water intake data into the user's collection in the database
     try:
+        current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
-        user_collection.insert_one({'name': "water", 'ounces': water_amount})
+        user_collection.insert_one({
+            'name': "water", 
+            'ounces': water_amount,
+            'datetime': current_datetime  # Add complete timestamp
+        })
         # Redirect to Home.html upon successful insertion
         return redirect(url_for('home'))
     except Exception as e:
         return jsonify({'error': str(e)})
+
+
 
 @app.route('/add_food', methods=['POST'])
 def add_food():
@@ -152,6 +181,9 @@ def add_food():
     meal = request.form.get('meal')
     calories = round(float(request.form.get('calories'))) 
     grams = request.form.get('grams')
+    
+    # Get current date and time
+    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # Retrieve the username from the session
     username = session.get('username')
@@ -160,12 +192,21 @@ def add_food():
 
     # Insert food intake data into the user's collection in the database
     try:
+        current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
-        user_collection.insert_one({'name': food_name, 'meal': meal, 'calories': round(calories), 'grams': grams})
+        user_collection.insert_one({
+            'name': food_name, 
+            'meal': meal, 
+            'calories': round(calories), 
+            'grams': grams,
+            'datetime': current_datetime  # Add complete timestamp
+        })
+    
         # Redirect to Home.html upon successful insertion
         return redirect(url_for('home'))
     except Exception as e:
         return jsonify({'error': str(e)})
+    
 
 @app.route('/food_items')
 def get_food_items():

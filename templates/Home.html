@@ -36,14 +36,24 @@
                 <h3>{{ meal|capitalize }}</h3>
                 <div class="meal-items">
                     {% for item in items %}
-                    <div class="item">
-                        {{ item.name }} - {{ item.calories }} calories
-                    </div>
-                    {% endfor %}
+<div class="item">
+    {{ item.name }} - {{ item.calories }} calories 
+    <span class="datetime" data-full-datetime="{{ item.datetime }}"style="color: gray; font-size: 14px;">{{ item.datetime.split(' ')[1] }}</span>
+
+</div>
+{% endfor %}
+
+
                 </div>
             </div>
             {% endfor %}
+             <!-- Display Total Daily Consumption -->
+             <div class="total-consumption">
+                Total Daily Consumption: <span style="color: green; margin-left: 10px;">{{ total_calories }} calories</span>
+            </div>
+            
 
+    <button onclick="openFoodPopup()">Add Food Intake</button>
             <button onclick="openFoodPopup()">Add Food Intake</button>
             <div id="food-popup" class="popup" style="display: none;">
                 <h3>Add Food Intake</h3>
@@ -62,7 +72,7 @@
                             <input type="text" id="grams" name="grams" style="width: 60px;">
                         </div>
 
-                        <button type="button" onclick="checkCalories()" style="margin-left: 20px;">Check Calories
+                        <button type="button" onclick="checkCalories()" style="margin-left: 14px;">Check Calories
                         </button> <!-- Check Calories button -->
                     </div>
 
@@ -90,13 +100,20 @@
 
         </section>
 
+
 <!-- Water Intake -->
 <section class="water-intake section">
     <h2>Water Intake</h2>
+   
     <ul id="water-list">
         {% for item in water_items %}
-            <li>{{ item.ounces }} ounces</li>
-        {% endfor %}
+<li>{{ item.ounces }} ounces 
+    <span class="datetime" data-full-datetime="{{ item.datetime }}"style="color: gray; font-size: 14px;">{{ item.datetime.split(' ')[1] }}</span>
+
+</li>
+{% endfor %}
+
+
     </ul>
     <button onclick="openWaterPopup()">Add Water Intake</button>
     <div id="water-popup" style="display: none;">
@@ -107,7 +124,10 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+    <p class="total-ounces">Total Ounces Consumed: {{ total_ounces }} ounces</p>
+
 </section>
+
 
         
 
@@ -138,16 +158,38 @@
             setInterval(function () {
                 updateDateTime(dateTimeElement);
             }, 60000); // Update every minute
+            const foodDatetimeElements = document.querySelectorAll('.datetime');
+    foodDatetimeElements.forEach(element => {
+        displayFoodTime(element);
+    });
         });
     
         function updateDateTime(dateTimeElement) {
-            const currentDate = new Date();
-            const hours = currentDate.getHours() % 12 || 12; // Convert to 12-hour format
-            const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-            const amPm = currentDate.getHours() >= 12 ? 'PM' : 'AM';
-            
-            dateTimeElement.textContent = hours + ":" + minutes + " " + amPm;
-        }
+    const currentDate = new Date();
+    let hours = currentDate.getHours();
+    const amPm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    
+    dateTimeElement.textContent = hours + ":" + minutes + " " + amPm;
+}
+
+function displayFoodTime(datetimeElement) {
+    const fullDateTime = datetimeElement.getAttribute('data-full-datetime');
+    const timeParts = fullDateTime.split(' ')[1].split(':');
+    let hours = parseInt(timeParts[0]);
+    const minutes = timeParts[1];
+    const amPm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12;
+
+    datetimeElement.textContent = hours + ":" + minutes + " " + amPm;
+}
+
     
         // Rest of the script remains unchanged
         function openFoodPopup() {
