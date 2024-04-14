@@ -4,7 +4,7 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif, sans-serif;
     background-image: url('https://i.pinimg.com/564x/d0/54/0d/d0540d13686095a3c8245c02235214c8.jpg');
     background-size: cover;
-    color: #000;
+    color: #000000;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -16,9 +16,9 @@ header {
     text-align: center;
     justify-content: space-between;
     background-color: beige;
-    height: 150px; /* Adjusted height */
+    height: 150px;
     color: burlywood;
-    padding: 20px 40px; /* Added padding */
+    padding: 20px 40px;
 }
 
 header h1 {
@@ -29,45 +29,14 @@ header h1 {
     display: inline-block;
     width: calc(70% - 20px);
     max-width: 1000px;
-    height: 900;
+    height: 900px;
     margin: 10px auto;
     padding: 10px;
     vertical-align: top;
-}
-
-.water-intake {
-    display: inline-block;
-    width: calc(30% - 20px);
-    max-width: 750px;
-    height: 300px;
-    margin: 10px auto;
-    padding: 10px;
-    vertical-align: top;
-}
-
-@media screen and (max-width: 1000px) {
-    .daily-intake, .water-intake {
-        width: calc(100% - 20px);
-        margin: 10px auto;
-    }
-}
-
-.section {
-    margin: 20px;
-    padding: 20px;
-    flex: 1;
-    opacity: 0.95;
-    border-radius: 10px;
-}
-
-.daily-intake, .water-intake, .weekly-progress {
-    border-radius: 10px;
-    text-align: center;
-}
-
-.daily-intake {
     background-color: #cfe6cf;
     border: 2px solid #5cb85c;
+    border-radius: 10px;
+    text-align: center;
 }
 
 .daily-intake h2, .daily-intake h3 {
@@ -88,15 +57,35 @@ header h1 {
     text-align: center;
 }
 
+/* Existing styles ... */
+
 .water-intake {
-    background-color: #b3d9ff;
-    border: 2px solid #5bc0de;
+    display: inline-block;
+    width: calc(30% - 20px);
+    max-width: 750px;
+    height: 900px;
+    margin: 10px auto;
+    padding: 10px;
+    vertical-align: top;
+    background-color: #b3d9ff; /* Light pastel blue background */
+    border: 2px solid #5bc0de; /* Light blue border */
+    border-radius: 10px;
+    text-align: center;
+    list-style-type: none; 
+    height: auto; /* Allow it to expand based on content */
+}
+
+.water-intake li {
+    list-style-type: none; /* Removing bullet points */
+    margin-bottom: 5px;
+    text-align: center;
+    color:#050553;
+    line-height: 1.5;
+
 }
 
 .water-intake h2, .water-intake h3 {
-    color: #5bc0de;
-    font-family: "Georgia", Times, serif;
-    font-size: 24px;
+    color: #5bc0de; /* Blue titles and buttons */
 }
 
 .water-intake button {
@@ -105,44 +94,26 @@ header h1 {
     border: 1px solid #5bc0de;
     border-radius: 10px;
     padding: 5px;
-    margin-top: 10px;
 }
 
-.water-intake li {
-    list-style-type: none;
-    margin-bottom: 5px;
-    text-align: center;
-    color: #0064a0;
-    font-family: "Georgia", Times, serif;
-    font-size: 18px;
+
+
+
+
+
+@media screen and (max-width: 1000px) {
+    .daily-intake, .water-intake {
+        width: calc(100% - 20px);
+        margin: 10px auto;
+    }
 }
 
-.weekly-progress {
-    margin-top: 20px;
-    background-color: #ffd699;
-    border: 2px solid #ffad33;
-    color: #dbaa60;
-    height: 250px;
-}
-
-#intake {
-    display: inline-block;
-    width: 500px;
-    height: 800px;
-}
-
-.daily-intake li,
-.water-intake li {
-    margin-bottom: 5px;
-    text-align: center;
-}
-
-.daily-intake button,
-.water-intake button {
-    margin-top: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.section {
+    margin: 20px;
+    padding: 20px;
+    flex: 1;
+    opacity: 0.95;
+    border-radius: 10px;
 }
 
 .end-day {
@@ -180,6 +151,8 @@ header button {
     padding: 5px 0;
     margin-bottom: 5px;
 }
+
+
 .input-group {
     display: flex;
     justify-content: space-between;
@@ -195,12 +168,15 @@ header button {
 #food-name{
     width: 60%;
 }
+
 #grams {
     width: 30%;
 }
+
 #calories {
     width: 60%;
 }
+
 .meal-section {
     margin-bottom: 20px;
 }
@@ -216,3 +192,24 @@ header button {
     padding: 10px;
     border-radius: 5px;
 }
+/* ... (previous styles) ... */
+
+.weekly-progress {
+    margin-top: 20px; /* Add space between sections */
+    background-color: #ffd699; /* Light pastel orange background */
+    border: 2px solid #ffad33; /* Light orange border */
+    margin-top: 20px;
+    background-color: #ffd699;
+    text-align: center; /* Centering the text within the section */
+    border: 2px solid #ffad33;
+    color: #dbaa60;
+    height: 250px;
+    height: 250px;
+}
+
+.weekly-progress h2 {
+    margin-bottom: 20px;
+    color: #ff6347; /* Tomato title color */
+}
+
+

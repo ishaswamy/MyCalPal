@@ -96,9 +96,14 @@ def home():
     username = session.get('username')
     if username:
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
-        items = list(user_collection.find())
         
-        # Group items by meal
+        # Fetch food items
+        items = list(user_collection.find({"name": {"$ne": "water"}}))
+        
+        # Fetch water items separately
+        water_items = list(user_collection.find({"name": "water"}))
+        
+        # Group food items by meal
         meals = {
             'breakfast': [],
             'lunch': [],
@@ -107,14 +112,12 @@ def home():
         }
 
         for item in items:
-            if item['name'] != 'water':
-                if 'meal' in item:
-                    meals[item['meal']].append(item)
+            if 'meal' in item:
+                meals[item['meal']].append(item)
         
-        return render_template('Home.html', meals=meals)
+        return render_template('Home.html', meals=meals, water_items=water_items)
     else:
         return redirect(url_for('login'))
-
 
 
 

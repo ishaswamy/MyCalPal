@@ -90,26 +90,26 @@
 
         </section>
 
-        <section class="water-intake section">
-            <h2>Water Intake</h2>
-            <ul id="water-list">
-                <!-- Loop through water intake items and display the amount for items with name 'water' -->
-                {% for item in items %}
-                {% if item.name == 'water' %}
-                <li>{{ item.ounces }} ounces</li>
-                {% endif %}
-                {% endfor %}
-            </ul>
-            <button onclick="openWaterPopup()">Add Water Intake</button>
-            <div id="water-popup" style="display: none;">
-                <h3>Add Water Intake</h3>
-                <form id="water-form" action="/add_water" method="POST">
-                    <label for="water-amount">Amount (in ounces):</label>
-                    <input type="number" id="water-amount" name="water-amount" style="width: 60px;">
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-        </section>
+<!-- Water Intake -->
+<section class="water-intake section">
+    <h2>Water Intake</h2>
+    <ul id="water-list">
+        {% for item in water_items %}
+            <li>{{ item.ounces }} ounces</li>
+        {% endfor %}
+    </ul>
+    <button onclick="openWaterPopup()">Add Water Intake</button>
+    <div id="water-popup" style="display: none;">
+        <h3>Add Water Intake</h3>
+        <form id="water-form" action="/add_water" method="POST">
+            <label for="water-amount">Amount (in ounces):</label>
+            <input type="number" id="water-amount" name="water-amount">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</section>
+
+        
 
         <section class="end-day">
             <button onclick="endDay()">End Day</button>
