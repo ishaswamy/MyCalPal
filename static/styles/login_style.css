@@ -32,7 +32,7 @@ form {
     border-radius: 10px;
     text-align: center;
     width: 50%;
-    margin-left: 35vh;
+    margin: auto auto;
 }
 
 .login h3{
