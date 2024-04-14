@@ -1,50 +1,62 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif, sans-serif;
     background-image: url('https://i.pinimg.com/564x/d0/54/0d/d0540d13686095a3c8245c02235214c8.jpg');
     background-size: cover;
-    color: #000; /* Black text color */
-    height: 100vh; /* Make body fill the viewport height */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange children vertically */
+    color: #000;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
     display: flex;
-    align-items: center; /* Vertically center the content */
-    justify-content: center; /* Horizontally center the content */
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
     background-color: beige;
-    height: 75px;
+    height: 150px; /* Adjusted height */
     color: burlywood;
+    padding: 20px 40px; /* Added padding */
 }
 
 header h1 {
-    margin: 10; /* Remove default margin */
+    margin: 0;
 }
 
-.daily-intake, .water-intake {
+.daily-intake {
     display: inline-block;
-    width: calc(50% - 20px); /* Set width to 50% of the container width minus margins */
-    max-width: 750px; /* Limit maximum width */
-    height: 600;
-    margin: 10px auto; /* Center horizontally and add space from the top */
+    width: calc(70% - 20px);
+    max-width: 1000px;
+    height: 900;
+    margin: 10px auto;
     padding: 10px;
-    vertical-align: top; /* Align sections from the top */
+    vertical-align: top;
+}
+
+.water-intake {
+    display: inline-block;
+    width: calc(30% - 20px);
+    max-width: 750px;
+    height: 300px;
+    margin: 10px auto;
+    padding: 10px;
+    vertical-align: top;
 }
 
 @media screen and (max-width: 1000px) {
     .daily-intake, .water-intake {
-        width: calc(100% - 20px); /* Set width to 100% on smaller screens */
-        margin: 10px auto; /* Center horizontally */
+        width: calc(100% - 20px);
+        margin: 10px auto;
     }
 }
 
 .section {
     margin: 20px;
     padding: 20px;
-    flex: 1; /* Grow and fill available space */
-    opacity: 0.95; /* Reduced opacity */
+    flex: 1;
+    opacity: 0.95;
     border-radius: 10px;
 }
 
@@ -54,15 +66,15 @@ header h1 {
 }
 
 .daily-intake {
-    background-color: #cfe6cf; /* Light pastel green background */
-    border: 2px solid #5cb85c; /* Light green border */
+    background-color: #cfe6cf;
+    border: 2px solid #5cb85c;
 }
 
 .daily-intake h2, .daily-intake h3 {
-    color: #5cb85c; /* Green titles and buttons */
+    color: #5cb85c;
 }
 
-.daily-intake button{
+.daily-intake button {
     color: white;
     background-color: #b0d4b0;
     border: 1px solid #5cb85c;
@@ -71,16 +83,20 @@ header h1 {
 }
 
 .daily-intake li {
-    list-style-type: disc; /* Round bullet points for food items */
+    list-style-type: disc;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
 .water-intake {
-    background-color: #b3d9ff; /* Light pastel blue background */
-    border: 2px solid #5bc0de; /* Light blue border */
+    background-color: #b3d9ff;
+    border: 2px solid #5bc0de;
 }
 
 .water-intake h2, .water-intake h3 {
-    color: #5bc0de; /* Blue titles and buttons */
+    color: #5bc0de;
+    font-family: "Georgia", Times, serif;
+    font-size: 24px;
 }
 
 .water-intake button {
@@ -89,21 +105,27 @@ header h1 {
     border: 1px solid #5bc0de;
     border-radius: 10px;
     padding: 5px;
+    margin-top: 10px;
 }
 
 .water-intake li {
-    list-style-type: disc; /* Round bullet points for water intake */
+    list-style-type: none;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #0064a0;
+    font-family: "Georgia", Times, serif;
+    font-size: 18px;
 }
 
 .weekly-progress {
-    margin-top: 20px; /* Add space between sections */
-    background-color: #ffd699; /* Light pastel orange background */
-    border: 2px solid #ffad33; /* Light orange border */
+    margin-top: 20px;
+    background-color: #ffd699;
+    border: 2px solid #ffad33;
     color: #dbaa60;
-    height: 250px
+    height: 250px;
 }
 
-#intake{
+#intake {
     display: inline-block;
     width: 500px;
     height: 800px;
@@ -111,21 +133,21 @@ header h1 {
 
 .daily-intake li,
 .water-intake li {
-    margin-bottom: 5px; /* Decrease space between bullet points and words */
+    margin-bottom: 5px;
     text-align: center;
 }
 
 .daily-intake button,
 .water-intake button {
-    margin-top: 10px; /* Add space between lists and buttons */
-    display: block; /* Ensure buttons appear on a new line */
-    margin-left: auto; /* Center buttons horizontally */
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
     margin-right: auto;
 }
 
 .end-day {
-    text-align: center; /* Center align the button */
-    margin-top: 20px; /* Add space from the top */
+    text-align: center;
+    margin-top: 20px;
 }
 
 .end-day button {
@@ -145,20 +167,52 @@ header button {
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
-    margin-top: 10px; /* Add space between lists and buttons */
-    margin-right: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
 }
 
 .item {
-    background-color: transparent; /* Remove background color */
-    border: none; /* Remove border */
-    color: #006400; /* Dark green text color */
-    font-family: "Georgia", Times, serif; /* Use a pretty font */
-    font-size: 18px; /* Update font size */
-    padding: 5px 0; /* Adjust padding */
-    margin-bottom: 5px; /* Add space between food items */
+    background-color: transparent;
+    border: none;
+    color: #006400;
+    font-family: "Georgia", Times, serif;
+    font-size: 18px;
+    padding: 5px 0;
+    margin-bottom: 5px;
 }
-#grams {
-    width: 50px; /* Adjust the value to set the desired width */
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
+.input-wrapper {
+    flex: 1;
+    margin-right: 5px;
+}
+
+#food-name{
+    width: 60%;
+}
+#grams {
+    width: 30%;
+}
+#calories {
+    width: 60%;
+}
+.meal-section {
+    margin-bottom: 20px;
+}
+
+.meal-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}

@@ -1,201 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calorie Tracker Homepage</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home_style.css') }}">
 </head>
+
 <body>
 
-<header>
-    <h1>Welcome to Your Calorie Tracker</h1>
-    <button onclick="logout()">Logout</button>
-    <span id="current-date-time"></span> 
-</header>
-
-<div class="container">
-    <section class="daily-intake section">
-        <h2>Daily Intake</h2>
-        <!-- Inside the section with class="daily-intake section" -->
-        <div class="meal-sections">
-            {% for item in items %}
-                {% if item.name != 'water' %}
-                    <div class="item">
-                        {{ item.name }} - {{ item.meal }} - {{ item.calories_per_serving }} calories per serving
-                        {% if item.grams %} ({{ item.grams }} grams - {{ item.total_calories }} calories) {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        
-        <button onclick="openFoodPopup()">Add Food Intake</button>
-        <div id="food-popup" class="popup" style="display: none;">
-    <h3>Add Food Intake</h3>
-    <form id="food-form" action="/add_food" method="POST">
-        <label for="food-name">Food Name:</label>
-        <input list="foods" id="food-name" name="food-name">
-        <datalist id="foods">
-            <!-- Food options will be dynamically populated here -->
-        </datalist>
-        
-        <label for="grams">Grams:</label>
-        <input type="text" id="grams" name="grams">
-        
-        <button type="button" onclick="checkCalories()">Check Calories</button> <!-- Check Calories button -->
-        
-        <label for="meal">Meal:</label>
-        <select id="meal" name="meal">
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
-            <option value="snack">Snack</option>
-        </select>
-        
-        <label for="calories">Calories:</label>
-        <input type="text" id="calories" name="calories">
-        <button type="submit">Submit</button>
-    </form>
-</div>
-
-    </section>
+    <header>
+        <span id="current-date-time" style="margin-right: 20px;"></span>
+        <h1 class="center-text">Welcome to Your Calorie Tracker</h1>
+        <button onclick="logout()" style="margin-left: 20px;">Logout</button>
+        <span id="current-date-time"></span>
+    </header>
     
-     
-    
-
-    <section class="water-intake section">
-        <h2>Water Intake</h2>
-        <ul id="water-list">
-            <!-- Loop through water intake items and display the amount for items with name 'water' -->
-            {% for item in items %}
-                {% if item.name == 'water' %}
-                    <li>{{ item.ounces }} ounces</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <button onclick="openWaterPopup()">Add Water Intake</button>
-        <div id="water-popup" style="display: none;">
-            <h3>Add Water Intake</h3>
-            <form id="water-form" action="/add_water" method="POST">
-                <label for="water-amount">Amount (in ounces):</label>
-                <input type="number" id="water-amount" name="water-amount">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </section>
-    
-
-    <section class="end-day">
-        <button onclick="endDay()">End Day</button>
-    </section>
-
-    <section class="weekly-progress section">
-        <h2>Weekly Progress</h2>
-        <!-- Weekly bar graph will be displayed here -->
-    </section>
-</div>
-
-<footer>
-    <p>&copy; 2024 MyCalPal</p>
-</footer>
-
-<script>
-     document.addEventListener("DOMContentLoaded", function() {
-        const dateTimeElement = document.getElementById('current-date-time');
-        if(dateTimeElement) {
-            const currentDate = new Date();
-            const dateTimeString = currentDate.toLocaleString();
-            dateTimeElement.textContent = dateTimeString;
-        } else {
-            console.log("Error: 'current-date-time' element not found");
+    <style>
+        .center-text {
+            text-align: center;
+            margin: 0 auto;
+            width: fit-content;
         }
-
-        // Keep the interval to update time every second
-        setInterval(function() {
-            const currentDate = new Date();
-            const dateTimeString = currentDate.toLocaleString();
-            dateTimeElement.textContent = dateTimeString;
-        }, 1000);
-    });
+    </style>
     
-    function openFoodPopup() {
-        var popup = document.getElementById("food-popup");
-        popup.style.display = "block";
-    }
+    
 
-    function openWaterPopup() {
-        var popup = document.getElementById("water-popup");
-        popup.style.display = "block";
-    }
+    <div class="container">
+        <section class="daily-intake section">
+            <h2>Daily Intake</h2>
+            <!-- Inside the section with class="daily-intake section" -->
+            {% for meal, items in meals.items() %}
+            <div class="meal-section">
+                <h3>{{ meal|capitalize }}</h3>
+                <div class="meal-items">
+                    {% for item in items %}
+                    <div class="item">
+                        {{ item.name }} - {{ item.calories }} calories
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
 
-    function endDay() {
-        // Generate the weekly progress bar graph
-        var weeklyProgress = document.getElementById("weekly-progress");
-        // Logic to generate the bar graph based on the data collected
-        // Reset the daily intake and water intake sections for the next day
-        document.querySelector(".meal-sections").innerHTML = "";
-        document.getElementById("water-list").innerHTML = "";
-    }
+            <button onclick="openFoodPopup()">Add Food Intake</button>
+            <div id="food-popup" class="popup" style="display: none;">
+                <h3>Add Food Intake</h3>
+                <form id="food-form" action="/add_food" method="POST">
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <label for="food-name">Food Name:</label>
+                            <input list="foods" id="food-name" name="food-name">
+                            <datalist id="foods">
+                                <!-- Food options will be dynamically populated here -->
+                            </datalist>
+                        </div>
 
-    function logout() {
-        // Perform logout functionality here, such as redirecting to the logout route
-        window.location.href = "/LogIn.html";
-    }
+                        <div class="input-wrapper">
+                            <label for="grams">Grams:</label>
+                            <input type="text" id="grams" name="grams" style="width: 60px;">
+                        </div>
 
-    function fetchFoodItems() {
-    fetch('/food_items') 
-        .then(response => response.json())
-        .then(data => {
-            const foodList = document.getElementById('foods');
-            data.forEach(food => {
-                const option = document.createElement('option');
-                option.value = food;
-                foodList.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error fetching food items: ', error))
-}
+                        <button type="button" onclick="checkCalories()" style="margin-left: 20px;">Check Calories
+                        </button> <!-- Check Calories button -->
+                    </div>
 
-function checkCalories() {
-    const foodNameInput = document.getElementById("food-name");
-    const gramsInput = document.getElementById("grams");
-    const caloriesInput = document.getElementById("calories");
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <label for="meal">Meal:</label>
+                            <select id="meal" name="meal">
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="snack">Snack</option>
+                            </select>
+                        </div>
 
-    const foodName = foodNameInput.value;
-    const grams = gramsInput.value;
+                        <div class="input-wrapper">
+                            <label for="calories">Calories:</label>
+                            <input type="text" id="calories" name="calories" style="width: 60px;">
+                        </div>
+                    </div>
 
-    if (!foodName || !grams) {
-        alert("Please enter both food name and grams.");
-        return;
-    }
+                    <button type="submit">Submit</button>
 
-    // Fetch calories_per_serving and serving_size_grams from server
-    fetch(`/food_info?food_name=${foodName}`)
-        .then(response => response.json())
-        .then(data => {
-            const caloriesPerServing = data.calories_per_serving;
-            const servingSizeGrams = data.serving_size_grams;
+                </form>
+            </div>
+
+        </section>
+
+        <section class="water-intake section">
+            <h2>Water Intake</h2>
+            <ul id="water-list">
+                <!-- Loop through water intake items and display the amount for items with name 'water' -->
+                {% for item in items %}
+                {% if item.name == 'water' %}
+                <li>{{ item.ounces }} ounces</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            <button onclick="openWaterPopup()">Add Water Intake</button>
+            <div id="water-popup" style="display: none;">
+                <h3>Add Water Intake</h3>
+                <form id="water-form" action="/add_water" method="POST">
+                    <label for="water-amount">Amount (in ounces):</label>
+                    <input type="number" id="water-amount" name="water-amount" style="width: 60px;">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="end-day">
+            <button onclick="endDay()">End Day</button>
+        </section>
+
+        <section class="weekly-progress section">
+            <h2>Weekly Progress</h2>
+            <!-- Weekly bar graph will be displayed here -->
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 MyCalPal</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dateTimeElement = document.getElementById('current-date-time');
+            if (dateTimeElement) {
+                updateDateTime(dateTimeElement);
+            } else {
+                console.log("Error: 'current-date-time' element not found");
+            }
+    
+            // Keep the interval to update time every minute
+            setInterval(function () {
+                updateDateTime(dateTimeElement);
+            }, 60000); // Update every minute
+        });
+    
+        function updateDateTime(dateTimeElement) {
+            const currentDate = new Date();
+            const hours = currentDate.getHours() % 12 || 12; // Convert to 12-hour format
+            const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+            const amPm = currentDate.getHours() >= 12 ? 'PM' : 'AM';
             
-            if (!caloriesPerServing || !servingSizeGrams) {
-                alert("Information not found for this food.");
+            dateTimeElement.textContent = hours + ":" + minutes + " " + amPm;
+        }
+    
+        // Rest of the script remains unchanged
+        function openFoodPopup() {
+            var popup = document.getElementById("food-popup");
+            popup.style.display = "block";
+        }
+    
+        function openWaterPopup() {
+            var popup = document.getElementById("water-popup");
+            popup.style.display = "block";
+        }
+    
+        function endDay() {
+            // Generate the weekly progress bar graph
+            var weeklyProgress = document.getElementById("weekly-progress");
+            // Logic to generate the bar graph based on the data collected
+            // Reset the daily intake and water intake sections for the next day
+            document.querySelector(".meal-sections").innerHTML = "";
+            document.getElementById("water-list").innerHTML = "";
+        }
+    
+        function logout() {
+            // Perform logout functionality here, such as redirecting to the logout route
+            window.location.href = "/LogIn.html";
+        }
+    
+        function fetchFoodItems() {
+            fetch('/food_items')
+                .then(response => response.json())
+                .then(data => {
+                    const foodList = document.getElementById('foods');
+                    data.forEach(food => {
+                        const option = document.createElement('option');
+                        option.value = food;
+                        foodList.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching food items: ', error))
+        }
+    
+        function checkCalories() {
+            const foodNameInput = document.getElementById("food-name");
+            const gramsInput = document.getElementById("grams");
+            const caloriesInput = document.getElementById("calories");
+    
+            const foodName = foodNameInput.value;
+            const grams = gramsInput.value;
+    
+            if (!foodName || !grams) {
+                alert("Please enter both food name and grams.");
                 return;
             }
-
-            const totalCalories = (parseInt(grams) * caloriesPerServing) / servingSizeGrams;
-            caloriesInput.value = totalCalories.toFixed(2); // Set total calories in the calories input field
-        })
-        .catch(error => {
-            console.error('Error fetching food information: ', error);
-            alert("Error fetching food information. Please try again.");
-        });
-}
-
-
-
-
-    window.addEventListener('load', fetchFoodItems);
-</script>
+    
+            // Fetch calories_per_serving and serving_size_grams from server
+            fetch(`/food_info?food_name=${foodName}`)
+                .then(response => response.json())
+                .then(data => {
+                    const caloriesPerServing = data.calories_per_serving;
+                    const servingSizeGrams = data.serving_size_grams;
+    
+                    if (!caloriesPerServing || !servingSizeGrams) {
+                        alert("Information not found for this food.");
+                        return;
+                    }
+    
+                    const totalCalories = (parseInt(grams) * caloriesPerServing) / servingSizeGrams;
+                    caloriesInput.value = totalCalories.toFixed(2); // Set total calories in the calories input field
+                })
+                .catch(error => {
+                    console.error('Error fetching food information: ', error);
+                    alert("Error fetching food information. Please try again.");
+                });
+        }
+    
+        window.addEventListener('load', fetchFoodItems);
+    </script>
+    
+    
 
 </body>
+
 </html>

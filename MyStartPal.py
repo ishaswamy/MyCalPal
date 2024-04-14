@@ -93,15 +93,29 @@ def login_process():
 
 @app.route('/Home.html')
 def home():
-    # Retrieve all food items from the currently logged-in user's collection
     username = session.get('username')
     if username:
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
         items = list(user_collection.find())
-        # Render the Home.html template and pass the food items
-        return render_template('Home.html', items=items)
+        
+        # Group items by meal
+        meals = {
+            'breakfast': [],
+            'lunch': [],
+            'dinner': [],
+            'snack': []
+        }
+
+        for item in items:
+            if item['name'] != 'water':
+                if 'meal' in item:
+                    meals[item['meal']].append(item)
+        
+        return render_template('Home.html', meals=meals)
     else:
         return redirect(url_for('login'))
+
+
 
 
 @app.route('/LogIn.html')
@@ -133,7 +147,7 @@ def add_water():
 def add_food():
     food_name = request.form.get('food-name')
     meal = request.form.get('meal')
-    calories = request.form.get('calories')
+    calories = round(float(request.form.get('calories'))) 
     grams = request.form.get('grams')
 
     # Retrieve the username from the session
@@ -144,7 +158,7 @@ def add_food():
     # Insert food intake data into the user's collection in the database
     try:
         user_collection = db[hashlib.sha256(username.encode()).hexdigest()]
-        user_collection.insert_one({'name': food_name, 'meal': meal, 'calories': calories, 'grams': grams})
+        user_collection.insert_one({'name': food_name, 'meal': meal, 'calories': round(calories), 'grams': grams})
         # Redirect to Home.html upon successful insertion
         return redirect(url_for('home'))
     except Exception as e:
