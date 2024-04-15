@@ -127,17 +127,6 @@
             <p class="total-ounces">Total Ounces Consumed: {{ total_ounces }} ounces</p>
 
         </section>
-
-
-
-
-        <section class="end-day">
-            <button onclick="endDay()">End Day</button>
-        </section>
-
-        <section class="weekly-progress section">
-            <h2>Weekly Progress</h2>
-        </section>
     </div>
 
     <footer>
@@ -237,7 +226,7 @@
                 alert("Please enter both food name and grams.");
                 return;
             }
-            
+
             fetch(`/food_info?food_name=${foodName}`)
                 .then(response => response.json())
                 .then(data => {
