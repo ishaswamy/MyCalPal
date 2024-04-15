@@ -209,3 +209,15 @@ header button {
 }
 
 
+.total-consumption {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #008000; /* Green color */
+    font-size: 24px; /* Increased font size */
+}
+.total-ounces {
+    font-size: 24px;
+    color:#050553;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
