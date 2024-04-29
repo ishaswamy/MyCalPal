@@ -16,11 +16,7 @@
         <button onclick="logout()" style="margin-left: 20px;">Logout</button>
         <span id="current-date-time"></span>
     </header>
-    
-<<<<<<< HEAD
-    <!--text and box centering-->
-=======
->>>>>>> parent of e126323 (added comments to code)
+
     <style>
         .center-text {
             text-align: center;
@@ -28,13 +24,12 @@
             width: fit-content;
         }
     </style>
-    
-    
+
+
 
     <div class="container">
         <section class="daily-intake section">
             <h2>Daily Intake</h2>
-            <!-- Inside the section with class="daily-intake section" -->
             {% for meal, items in meals.items() %}
             <div class="meal-section">
                 <h3>{{ meal|capitalize }}</h3>
@@ -58,6 +53,7 @@
             </div>
 
 
+            <button onclick="openFoodPopup()">Add Food Intake</button>
             <button onclick="openFoodPopup()">Add Food Intake</button>
             <div id="food-popup" class="popup" style="display: none;">
                 <h3>Add Food Intake</h3>
@@ -103,45 +99,32 @@
 
         </section>
 
-<!-- Water Intake -->
-<section class="water-intake section">
-    <h2>Water Intake</h2>
-    <ul id="water-list">
-        {% for item in water_items %}
-            <li>{{ item.ounces }} ounces</li>
-        {% endfor %}
-    </ul>
-    <button onclick="openWaterPopup()">Add Water Intake</button>
-    <div id="water-popup" style="display: none;">
-        <h3>Add Water Intake</h3>
-        <form id="water-form" action="/add_water" method="POST">
-            <label for="water-amount">Amount (in ounces):</label>
-            <input type="number" id="water-amount" name="water-amount">
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</section>
 
-        
+        <section class="water-intake section">
+            <h2>Water Intake</h2>
 
-        <section class="end-day">
-            <button onclick="endDay()">End Day</button>
-        </section>
+            <ul id="water-list">
+                {% for item in water_items %}
+                <li>{{ item.ounces }} ounces
+                    <span class="datetime" data-full-datetime="{{ item.datetime }}"
+                        style="color: gray; font-size: 14px;">{{ item.datetime.split(' ')[1] }}</span>
 
-        <section class="weekly-progress section">
-            <h2>Weekly Progress</h2>
-            <!-- Weekly bar graph will be displayed here -->
-        </section>
+                </li>
+                {% endfor %}
 
 
+            </ul>
+            <button onclick="openWaterPopup()">Add Water Intake</button>
+            <div id="water-popup" style="display: none;">
+                <h3>Add Water Intake</h3>
+                <form id="water-form" action="/add_water" method="POST">
+                    <label for="water-amount">Amount (in ounces):</label>
+                    <input type="number" id="water-amount" name="water-amount">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <p class="total-ounces">Total Ounces Consumed: {{ total_ounces }} ounces</p>
 
-
-        <section class="end-day">
-            <button onclick="endDay()">End Day</button>
-        </section>
-
-        <section class="weekly-progress section">
-            <h2>Weekly Progress</h2>
         </section>
     </div>
 
@@ -176,30 +159,46 @@
             hours = hours % 12 || 12;
 
             const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-            const amPm = currentDate.getHours() >= 12 ? 'PM' : 'AM';
-            
-            dateTimeElement.textContent = hours + ":" + minutes + " " + amPm;
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0'); //
+            const year = currentDate.getFullYear();
+
+            dateTimeElement.innerHTML = `${hours}:${minutes} ${amPm}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${month}/${day}/${year}`;
+
         }
-    
-        // Rest of the script remains unchanged
+
+
+        function displayFoodTime(datetimeElement) {
+            const fullDateTime = datetimeElement.getAttribute('data-full-datetime');
+            const timeParts = fullDateTime.split(' ')[1].split(':');
+            let hours = parseInt(timeParts[0]);
+            const minutes = timeParts[1];
+            const amPm = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert hours to 12-hour format instead of military
+            hours = hours % 12 || 12;
+
+            datetimeElement.textContent = hours + ":" + minutes + " " + amPm;
+        }
+
         function openFoodPopup() {
             var popup = document.getElementById("food-popup");
             popup.style.display = "block";
         }
-    
+
         function openWaterPopup() {
             var popup = document.getElementById("water-popup");
             popup.style.display = "block";
         }
-    
+
         function endDay() {
             var weeklyProgress = document.getElementById("weekly-progress");
         }
-    
+
         function logout() {
             window.location.href = "/LogIn.html";
         }
-    
+
         function fetchFoodItems() {
             fetch('/food_items')
                 .then(response => response.json())
@@ -213,7 +212,7 @@
                 })
                 .catch(error => console.error('Error fetching food items: ', error))
         }
-    
+
         function checkCalories() {
             const foodNameInput = document.getElementById("food-name");
             const gramsInput = document.getElementById("grams");
@@ -226,7 +225,7 @@
                 alert("Please enter both food name and grams.");
                 return;
             }
-            
+
             fetch(`/food_info?food_name=${foodName}`)
                 .then(response => response.json())
                 .then(data => {
