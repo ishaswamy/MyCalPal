@@ -7,23 +7,21 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-# MongoDB connection details
+# Create MongoDB connection
 username = "eij"
 password = "c@lori3"
 cluster_url = "cluster0.ydug9w5.mongodb.net"
 uri = f"mongodb+srv://{urllib.parse.quote_plus(username)}:{urllib.parse.quote_plus(password)}@{cluster_url}/?retryWrites=true&w=majority"
-
-# Connect to MongoDB
 client = MongoClient(uri)
 
-# Access the database
+# Access database
 db = client['MyCalPal']
 
-# Access collections in the database
+# Access collections within database
 loginInfo = db['Credentials']
 potential_food_collection = db['Potential Food Collection']
 
-# Launch LogIn Page upon start
+# Launch LogIn Page when the application starts
 @app.route('/')
 def login():
     return render_template('LogIn.html')#display login page to user
@@ -31,8 +29,8 @@ def login():
 #Route for user creating an account
 @app.route('/signup', methods=['POST'])
 def signup():
-    # Receive user information from the form
-    session.clear() #clear out anyone logged in prior
+    # Receive user information from the registration form
+    session.clear() #clear out anyone logged in prior (session data)
     name = request.form['name']
     username = request.form['username']
     password = request.form['password']
@@ -63,17 +61,17 @@ def signup():
         'weight_goal': weight_goal,
         'collection_name': hashed_username
     })  
-        # Create collection that corresponds with user to store intake
+        # Create collection corresponding with user to store intake information
         db.create_collection(f'{hashed_username}')
         # Redirect to Home.html upon successful account creation
         return redirect(url_for('home'))
 
-# Render the registration page
+# Render the signup page
 @app.route('/Registration.html')
 def register():
     return render_template('Registration.html')
 
-# Update to reflect user after they have logged in
+# Update page to reflect user after they have logged in
 @app.route('/login', methods=['POST'])
 def login_process():
     session.clear() #clear old users out
